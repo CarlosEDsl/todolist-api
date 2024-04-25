@@ -1,7 +1,6 @@
 package com.carloseduardo.treino.services;
 
 import com.carloseduardo.treino.models.User;
-import com.carloseduardo.treino.repositories.TaskRepository;
 import com.carloseduardo.treino.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private TaskRepository taskRepository;
 
     public User findById(Long id){
         Optional<User> user = this.userRepository.findById(id);
@@ -28,7 +25,6 @@ public class UserService {
     public User create(User obj) {
         obj.setId(null); // Garantir que não será enviado um usuário com ID
         obj = this.userRepository.save(obj);
-        this.taskRepository.saveAll(obj.getTasks());
         return obj;
     }
 
