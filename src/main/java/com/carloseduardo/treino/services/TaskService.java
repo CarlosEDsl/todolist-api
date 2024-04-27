@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +22,11 @@ public class TaskService {
     public Task findById(Long id){
         Optional<Task> task = this.taskRepository.findById(id);
         return task.orElseThrow(()->new RuntimeException("Tarefas não encontradas"));
+    }
+
+    public List<Task> findAllById(Long UserId){
+        List<Task> tasks = this.taskRepository.findByUser_Id(UserId);
+        return tasks;
     }
 
     @Transactional
@@ -38,10 +44,10 @@ public class TaskService {
         return this.taskRepository.save(newObj);
     }
 
-    public void delete(Task obj){
-        findById(obj.getId());
+    public void delete(Long id){
+        findById(id);
         try {
-            this.taskRepository.deleteById(obj.getId());
+            this.taskRepository.deleteById(id);
         }catch (Exception e){
             throw new RuntimeException("Futuro erro (delete do task)");
         }
