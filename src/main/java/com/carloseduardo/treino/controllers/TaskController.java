@@ -2,6 +2,7 @@ package com.carloseduardo.treino.controllers;
 
 import com.carloseduardo.treino.models.Task;
 import com.carloseduardo.treino.services.TaskService;
+import com.carloseduardo.treino.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +21,9 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/{id}")
     public ResponseEntity<Task> FindById(@PathVariable Long id){
         Task obj = this.taskService.findById(id);
@@ -28,6 +32,7 @@ public class TaskController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Task>> findAllByUserId(@PathVariable Long userId){
+        userService.findById(userId);
         List<Task> objs = this.taskService.findAllById(userId);
         return ResponseEntity.ok().body(objs);
     }
