@@ -2,6 +2,8 @@ package com.carloseduardo.treino.services;
 
 import com.carloseduardo.treino.models.User;
 import com.carloseduardo.treino.repositories.UserRepository;
+import com.carloseduardo.treino.services.exceptions.DataBindingViolationException;
+import com.carloseduardo.treino.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,7 @@ public class UserService {
 
     public User findById(Long id){
         Optional<User> user = this.userRepository.findById(id);
-        return user.orElseThrow(()-> new RuntimeException(
+        return user.orElseThrow(()-> new ObjectNotFoundException(
                 "Usuário não encontrado no ID: " + id + "Tipo: " + User.class.getName()
         ));
     }
@@ -41,7 +43,7 @@ public class UserService {
             this.userRepository.deleteById(id);
 
         }catch (Exception e) {
-            throw new RuntimeException("O usuário ainda possuí relacionamentos, logo não pode ser deletado");
+            throw new DataBindingViolationException("O usuário ainda possuí relacionamentos, logo não pode ser deletado");
         }
     }
 

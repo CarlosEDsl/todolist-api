@@ -4,6 +4,8 @@ import com.carloseduardo.treino.models.Task;
 import com.carloseduardo.treino.models.User;
 import com.carloseduardo.treino.repositories.TaskRepository;
 
+import com.carloseduardo.treino.services.exceptions.DataBindingViolationException;
+import com.carloseduardo.treino.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,7 @@ public class TaskService {
 
     public Task findById(Long id){
         Optional<Task> task = this.taskRepository.findById(id);
-        return task.orElseThrow(()->new RuntimeException("Tarefas não encontradas"));
+        return task.orElseThrow(()->new ObjectNotFoundException("Tarefas não encontradas"));
     }
 
     public List<Task> findAllById(Long UserId){
@@ -49,7 +51,7 @@ public class TaskService {
         try {
             this.taskRepository.deleteById(id);
         }catch (Exception e){
-            throw new RuntimeException("Futuro erro (delete do task)");
+            throw new DataBindingViolationException("Futuro erro (delete do task)");
         }
     }
 }
