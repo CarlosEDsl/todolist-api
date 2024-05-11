@@ -1,6 +1,7 @@
 package com.carloseduardo.treino.configs;
 
 import com.carloseduardo.treino.security.JWTAuthenticationFilter;
+import com.carloseduardo.treino.security.JWTAuthorizationFilter;
 import com.carloseduardo.treino.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -60,12 +61,13 @@ public class SecurityConfig {
                         .anyRequest().authenticated().and().authenticationManager(authenticationManager);
 
         http.addFilter(new JWTAuthenticationFilter(this.authenticationManager, this.jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(this.authenticationManager, this.jwtUtil, this.userDetailsService));
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
 
-    }
+    }   
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
