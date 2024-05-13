@@ -19,40 +19,37 @@ import java.util.stream.Collectors;
 @Table(name = User.TABLE_NAME)
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 public class User {
 
-    public interface CreateUser {};
-    public interface UpdateUser {};
+
+
     public static final String TABLE_NAME = "user";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "username", length = 100, nullable = false, unique = true)
-    @NotEmpty(groups = CreateUser.class)
-    @NotNull(groups = CreateUser.class)
-    @Size(min = 2, max = 100, groups = CreateUser.class)
+    @NotBlank()
+    @Size(min = 2, max = 100)
     private String username;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @Column(name = "password", length = 60, nullable = false)
-    @NotBlank(groups = {CreateUser.class, UpdateUser.class})
-    @Size(min = 8, max = 60, groups = {CreateUser.class, UpdateUser.class})
+    @JsonProperty(access = Access.WRITE_ONLY)
+    @NotBlank()
+    @Size(min = 8, max = 60)
     private String password;
 
     @OneToMany(mappedBy = "user")
     @JsonProperty(access = Access.WRITE_ONLY)
     private List<Task> tasks = new ArrayList<Task>();
 
+    @Column(name = "profile", nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)
     @JsonProperty(access = Access.WRITE_ONLY)
     @CollectionTable(name = "user_profile")
-    @Column(name = "profile", nullable = false)
     private Set<Integer> profiles = new HashSet<>();
 
     public Set<ProfileEnum> getProfiles() {

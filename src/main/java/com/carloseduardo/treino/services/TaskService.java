@@ -3,6 +3,7 @@ package com.carloseduardo.treino.services;
 import com.carloseduardo.treino.models.Task;
 import com.carloseduardo.treino.models.User;
 import com.carloseduardo.treino.models.enums.ProfileEnum;
+import com.carloseduardo.treino.models.projection.TaskProjection;
 import com.carloseduardo.treino.repositories.TaskRepository;
 
 import com.carloseduardo.treino.security.UserSpringSecurity;
@@ -35,13 +36,13 @@ public class TaskService {
 
     }
 
-    public List<Task> findAllByUser(){
+    public List<TaskProjection> findAllByUser(){
 
         UserSpringSecurity userSpringSecurity = UserService.authenticated();
         if (Objects.isNull(userSpringSecurity))
             throw new AuthorizationException("Acesso negado!");
 
-        List<Task> tasks = this.taskRepository.findByUser_Id(userSpringSecurity.getId());
+        List<TaskProjection> tasks = this.taskRepository.findByUser_Id(userSpringSecurity.getId());
         return tasks;
     }
 

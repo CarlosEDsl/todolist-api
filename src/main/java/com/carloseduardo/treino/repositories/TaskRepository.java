@@ -1,6 +1,7 @@
 package com.carloseduardo.treino.repositories;
 
 import com.carloseduardo.treino.models.Task;
+import com.carloseduardo.treino.models.projection.TaskProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +12,7 @@ import java.util.Optional;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     //Automação do Spring
-    List<Task> findByUser_Id(Long id);
+    List<TaskProjection> findByUser_Id(Long id);
 
     //Query com Spring
 //    @Query(value = "SELECT t FROM Task t WHERE t.user.id = :id")
