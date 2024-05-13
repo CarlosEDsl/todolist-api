@@ -5,6 +5,7 @@ import com.carloseduardo.treino.services.TaskService;
 import com.carloseduardo.treino.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -30,10 +31,9 @@ public class TaskController {
         return ResponseEntity.ok(obj);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Task>> findAllByUserId(@PathVariable Long userId){
-        userService.findById(userId);
-        List<Task> objs = this.taskService.findAllById(userId);
+    @GetMapping("/user")
+    public ResponseEntity<List<Task>> findAllByUser(){
+        List<Task> objs = this.taskService.findAllByUser();
         return ResponseEntity.ok().body(objs);
     }
 
@@ -60,6 +60,11 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<Task>> getAll() {
+        List<Task> allTasks = this.taskService.findAll();
+        return ResponseEntity.ok().body(allTasks);
+    }
 
 
 
