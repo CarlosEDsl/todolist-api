@@ -16,25 +16,30 @@ async function login() {
         }),
     });
 
-    let key = "Authorization";
-    let token = response.headers.get(key);
-
-    window.localStorage.setItem(key, token);
-
     if (response.ok) {
         showToast("#okToast");
+        console.log("sucesso da response");
+
+        let key = "Authorization";
+        let token = response.headers.get(key);
+        window.localStorage.setItem(key, token);
+        console.log(token);
+
+        window.setTimeout(function () {
+            window.location = "../view/index.html";
+        }, 2000);
+
     } else {
         showToast("#errorToast");
+        console.log("erro");
     }
 
-    window.setTimeout(function () {
-        window.location = "/view/index.html";
-    }, 2000);
+
 }
 
 function showToast(id) {
-    let toastElList = [].slice.call(document.querySelectorAll(id));
-    let toastList = toastElList.map(function (toastEl) {
+    var toastElList = [].slice.call(document.querySelectorAll(id));
+    var toastList = toastElList.map(function (toastEl) {
         return new bootstrap.Toast(toastEl);
     });
     toastList.forEach((toast) => toast.show());
